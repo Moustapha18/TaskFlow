@@ -1,0 +1,93 @@
+@if (task(); as t) {
+  <a mat-stroked-button [routerLink]="['/projects', projectId()]">← Retour au projet</a>
+
+  <article class="task-detail">
+    <header class="task-detail__header">
+      <h1>{{ t.title }}</h1>
+      <span [class]="'task-detail__priority task-detail__priority--' + t.priority">
+        {{ priorityLabels[t.priority] }}
+      </span>
+    </header>
+
+    <p class="task-detail__description">{{ t.description }}</p>
+
+    <dl class="task-detail__meta">
+      <div>
+        <dt>Statut</dt>
+        <dd [class]="'task-detail__status task-detail__status--' + t.status">
+          {{ statusLabels[t.status] }}
+        </dd>
+      </div>
+
+      <div>
+        <dt>Assignée à</dt>
+        <dd>
+          @if (assignee(); as user) {
+            👤 {{ user.name }}
+          } @else {
+            <span class="muted">Non assignée</span>
+          }
+        </dd>
+      </div>
+
+      <div>
+        <dt>Date limite</dt>
+        <dd>
+          @if (t.deadline) {
+            {{ t.deadline | slice: 0 : 10 }}
+          } @else {
+            <span class="muted">Aucune</span>
+          }
+        </dd>
+      </div>
+    </dl>
+
+    <a mat-flat-button color="primary" [routerLink]="['/projects', projectId(), 'tasks', t.id, 'edit']">
+      Modifier la tâche
+    </a>
+  </article>
+
+  <!-- Commentaires -->
+  <section class="comments">
+    <h2>Commentaires ({{ comments().length }})</h2>
+
+    <form class="comments__form" [formGroup]="commentForm" (ngSubmit)="onAddComment()">
+      <mat-form-field appearance="outline" class="comments__field">
+        <mat-label>Ajouter un commentaire</mat-label>
+        <textarea matInput rows="2" formControlName="content"></textarea>
+        @if (
+          commentForm.controls.content.hasError('required') &&
+          commentForm.controls.content.touched
+        ) {
+          <mat-hint>Le commentaire ne peut pas être vide</mat-hint>
+        }
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="commentForm.invalid || submitting()"
+      >
+        {{ submitting() ? 'Envoi...' : 'Publier' }}
+      </button>
+    </form>
+
+    @if (comments().length === 0) {
+      <p class="empty-state">Aucun commentaire pour l'instant.</p>
+    } @else {
+      <ul class="comments__list">
+        @for (comment of comments(); track comment.id) {
+          <li class="comments__item">
+            <header class="comments__item-header">
+              <strong>{{ authorOf(comment.authorId)?.name ?? 'Utilisateur' }}</strong>
+              <time>{{ comment.createdAt | slice: 0 : 10 }}</time>
+            </header>
+            <p>{{ comment.content }}</p>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+} @else {
+  <p class="empty-state">Cette tâche n'existe pas.</p>
+}

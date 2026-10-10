@@ -2,32 +2,41 @@
   <form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
     <h1>Connexion</h1>
 
+    @if (justRegistered()) {
+      <p class="login-success">Inscription réussie 🎉 Connecte-toi maintenant.</p>
+    }
+
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email"/>
-      @if(form.controls.email.hasError('required') && form.controls.email.touched){
+      <input matInput formControlName="email" type="email" />
+      @if (form.controls.email.hasError('required') && form.controls.email.touched) {
         <mat-hint>L'email est obligatoire</mat-hint>
       }
-      @if(form.controls.email.hasError('email') && form.controls.email.touched){
+      @if (form.controls.email.hasError('email') && form.controls.email.touched) {
         <mat-hint>Format d'email invalide</mat-hint>
       }
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Mot de passe</mat-label>
-      <input matInput type="password" formControlName="password"/>
-      @if(form.controls.password.hasError('required') && form.controls.password.touched){
+      <input matInput type="password" formControlName="password" />
+      @if (form.controls.password.hasError('required') && form.controls.password.touched) {
         <mat-hint>Le mot de passe est obligatoire</mat-hint>
       }
     </mat-form-field>
 
-    @if(loginFailed()) {
+    @if (loginFailed()) {
       <p class="login-error">Email ou mot de passe incorrect.</p>
     }
 
     <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
       Se connecter
     </button>
+
+   <p class="login-footer">
+  Pas encore de compte ?
+  <a routerLink="/register">Créer un compte</a>
+</p>
   </form>
 
 </div>

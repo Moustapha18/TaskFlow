@@ -84,3 +84,12 @@ p {
 a {
   color: var(--color-primary);
 }
+:root {
+  /* ... variables existantes ... */
+
+  /* Priorités de tâches */
+  --color-priority-basse: #6b7280;
+  --color-priority-moyenne: #2bbbd7;
+  --color-priority-haute: #d97706;
+  --color-priority-urgente: #dc2626;
+}

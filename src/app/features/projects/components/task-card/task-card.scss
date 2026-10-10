@@ -1,0 +1,170 @@
+:host {
+  display: block;
+}
+
+.task-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+
+  &:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  &__title {
+    font-size: 0.98rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  &__description {
+    font-size: 0.82rem;
+    margin: 0;
+    color: var(--color-ink-muted);
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  &__status,
+  &__priority {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    text-transform: capitalize;
+  }
+
+  // Priorités
+  &__priority {
+    &--basse {
+      color: var(--color-priority-basse);
+      background: color-mix(in srgb, var(--color-priority-basse) 15%, transparent);
+    }
+    &--moyenne {
+      color: var(--color-priority-moyenne);
+      background: color-mix(in srgb, var(--color-priority-moyenne) 15%, transparent);
+    }
+    &--haute {
+      color: var(--color-priority-haute);
+      background: color-mix(in srgb, var(--color-priority-haute) 15%, transparent);
+    }
+    &--urgente {
+      color: var(--color-priority-urgente);
+      background: color-mix(in srgb, var(--color-priority-urgente) 15%, transparent);
+    }
+  }
+
+  // Statuts (réutilise les couleurs existantes)
+  &__status {
+    &--a_faire {
+      color: var(--color-ink-muted);
+      background: color-mix(in srgb, var(--color-ink-muted) 15%, transparent);
+    }
+    &--en_cours {
+      color: var(--color-status-en_pause);
+      background: color-mix(in srgb, var(--color-status-en_pause) 15%, transparent);
+    }
+    &--termine {
+      color: var(--color-status-actif);
+      background: color-mix(in srgb, var(--color-status-actif) 15%, transparent);
+    }
+  }
+
+  &__assignee {
+    color: var(--color-ink-muted);
+    font-weight: 500;
+
+    &--empty {
+      font-style: italic;
+      opacity: 0.7;
+    }
+  }
+}
+.task-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.35rem;
+}
+.task-card {
+  cursor: pointer;
+
+  &__deadline {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    align-self: flex-start;
+
+    &--ok {
+      color: var(--color-ink-muted);
+      background: color-mix(in srgb, var(--color-ink-muted) 12%, transparent);
+    }
+    &--soon {
+      color: var(--color-status-en_pause);
+      background: color-mix(in srgb, var(--color-status-en_pause) 15%, transparent);
+    }
+    &--overdue {
+      color: var(--color-error);
+      background: color-mix(in srgb, var(--color-error) 15%, transparent);
+      font-weight: 700;
+    }
+  }
+}
+.task-card__deadline {
+  font-size: 0.78rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-ink-muted);
+
+  &--overdue {
+    color: var(--color-priority-urgente);
+    font-weight: 600;
+  }
+
+  &--soon {
+    color: var(--color-priority-haute);
+    font-weight: 600;
+  }
+
+  &-tag {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, currentColor 15%, transparent);
+    color: inherit;
+  }
+}
+.task-card__title {
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}

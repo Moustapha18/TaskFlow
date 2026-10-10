@@ -1,0 +1,21 @@
+@if (comments().length === 0) {
+  <p class="comment-list__empty">Aucun commentaire pour l'instant.</p>
+} @else {
+  <ul class="comment-list">
+    @for (comment of comments(); track comment.id) {
+      <li class="comment-list__item">
+        <header class="comment-list__header">
+          <strong>{{ authors().get(comment.authorId)?.name ?? 'Utilisateur' }}</strong>
+          <span class="comment-list__date">{{ comment.createdAt | date: 'dd MMM yyyy HH:mm' }}</span>
+        </header>
+        <p class="comment-list__content">{{ comment.content }}</p>
+
+        @if (currentUserId() === comment.authorId) {
+          <button mat-button color="warn" type="button" (click)="onDelete(comment)">
+            Supprimer
+          </button>
+        }
+      </li>
+    }
+  </ul>
+}

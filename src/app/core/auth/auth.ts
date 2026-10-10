@@ -11,7 +11,9 @@ interface StoredSession {
 }
 
 const STORAGE_KEY = 'taskflow.session';
-const SESSION_TTL_MS = 30_000;
+// Une session utilisateur doit durer raisonnablement longtemps.
+// 30 min est un bon compromis pour une démo/projet pédagogique.
+const SESSION_TTL_MS = 30 * 60_000;   // 30 minutes
 
 @Service()
 export class AuthService {
@@ -47,6 +49,17 @@ export class AuthService {
       tap(user => this.startSession(user))
     );
   }
+ register(input: { name: string; email: string; password: string }): Observable<User> {
+  const payload = {
+    name: input.name.trim(),
+    email: input.email.trim().toLowerCase(),
+    password: input.password,
+  };
+
+  return this.http
+    .post<User & { password: string }>(this.usersUrl, payload)
+    .pipe(map(({ password: _password, ...user }) => user));
+}
 
   logout(): void {
     this._currentUser.set(null);

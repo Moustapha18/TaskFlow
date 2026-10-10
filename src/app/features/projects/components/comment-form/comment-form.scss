@@ -1,0 +1,13 @@
+.comment-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+
+  &__field {
+    flex: 1;
+  }
+
+  button {
+    margin-top: 0.5rem;
+  }
+}

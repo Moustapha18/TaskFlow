@@ -1,0 +1,33 @@
+.register-layout {
+  display: flex;
+  justify-content: center;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 400px;
+
+  .subtitle {
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+.register-error {
+  color: var(--color-error);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.register-footer {
+  text-align: center;
+  font-size: 0.88rem;
+  margin-top: 0.75rem;
+}
+
+mat-form-field {
+  width: 100%;
+}

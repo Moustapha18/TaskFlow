@@ -1,0 +1,77 @@
+<div class="form-layout">
+  <form class="task-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h1>{{ isEditMode ? 'Modifier la tâche' : 'Nouvelle tâche' }}</h1>
+
+    @if (notFound()) {
+    <p class="task-form__error">Cette tâche n'existe pas.</p>
+    } @else {
+    <mat-form-field appearance="outline">
+      <mat-label>Titre</mat-label>
+      <input matInput formControlName="title" />
+      @if (form.controls.title.hasError('required') && form.controls.title.touched) {
+      <mat-hint>Le titre est obligatoire</mat-hint>
+      }
+      @if (form.controls.title.hasError('minlength')) {
+      <mat-hint>3 caractères minimum</mat-hint>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput rows="4" formControlName="description"></textarea>
+      @if (form.controls.description.hasError('required') && form.controls.description.touched) {
+      <mat-hint>La description est obligatoire</mat-hint>
+      }
+      @if (form.controls.description.hasError('maxlength')) {
+      <mat-hint>500 caractères maximum</mat-hint>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Statut</mat-label>
+      <mat-select formControlName="status">
+        @for (s of statuses; track s) {
+        <mat-option [value]="s">{{ statusLabels[s] }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Priorité</mat-label>
+      <mat-select formControlName="priority">
+        @for (p of priorities; track p) {
+        <mat-option [value]="p">{{ priorityLabels[p] }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Assignée à</mat-label>
+      <mat-select formControlName="assigneeId">
+        <mat-option [value]="null">— Non assignée —</mat-option>
+        @for (user of users(); track user.id) {
+        <mat-option [value]="user.id">{{ user.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date limite (optionnel)</mat-label>
+      <input matInput type="date" formControlName="deadline" />
+      <mat-hint>Laisse vide si aucune échéance</mat-hint>
+    </mat-form-field>
+
+    @if (submitFailed()) {
+    <p class="task-form__error">Impossible d'enregistrer. Réessaie.</p>
+    }
+
+    <div class="task-form__actions">
+      <button mat-stroked-button type="button" (click)="onCancel()">Annuler</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || submitting()">
+        {{ submitting()
+        ? 'Enregistrement...'
+        : (isEditMode ? 'Enregistrer' : 'Créer la tâche') }}
+      </button>
+    </div>
+    }
+  </form>
+</div>

@@ -1,0 +1,26 @@
+<form class="comment-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline" class="comment-form__field">
+    <mat-label>Ajouter un commentaire</mat-label>
+    <textarea
+      matInput
+      rows="2"
+      formControlName="content"
+      placeholder="Écris ton message..."
+    ></textarea>
+    @if (form.controls.content.hasError('required') && form.controls.content.touched) {
+      <mat-hint>Le commentaire est obligatoire</mat-hint>
+    }
+    @if (form.controls.content.hasError('maxlength')) {
+      <mat-hint>500 caractères maximum</mat-hint>
+    }
+  </mat-form-field>
+
+  <button
+    mat-flat-button
+    color="primary"
+    type="submit"
+    [disabled]="form.invalid || disabled()"
+  >
+    Envoyer
+  </button>
+</form>

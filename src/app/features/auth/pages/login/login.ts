@@ -1,17 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../core/auth/auth';
-import { Router } from '@angular/router';
 
 @Component({
   imports: [
     ReactiveFormsModule,
+    RouterLink,
     MatInputModule,
-    MatSelectModule,
     MatButtonModule,
     MatFormFieldModule,
   ],
@@ -23,26 +22,35 @@ export class Login {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-   protected readonly form = this.fb.nonNullable.group({
+  protected readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required]
+    password: ['', Validators.required],
   });
 
   protected readonly loginFailed = signal(false);
+  protected readonly justRegistered = signal(false);
 
-  onSubmit() {
-    console.log("form:", this.form);
-    if(this.form.invalid){
-      this.form.markAllAsTouched();
-      return;
+  constructor() {
+    const params = this.route.snapshot.queryParamMap;
+    if (params.get('registered') === '1') {
+      this.justRegistered.set(true);
+      const email = params.get('email');
+      if (email) this.form.controls.email.setValue(email);
     }
-
-    const {email, password } = this.form.getRawValue();
-    this.authService.login(email, password).subscribe({
-      next: () => this.router.navigate(['/projects']),
-      error: () => this.loginFailed.set(true),
-    });
-
   }
+
+ onSubmit(): void {
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
+  }
+
+  const { email, password } = this.form.getRawValue();
+  this.authService.login(email, password).subscribe({
+    next: () => this.router.navigate(['/projects']),   // ← ici
+    error: () => this.loginFailed.set(true),
+  });
+}
 }

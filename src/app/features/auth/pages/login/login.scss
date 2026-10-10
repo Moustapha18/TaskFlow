@@ -10,6 +10,29 @@
   width: 100%;
   max-width: 360px;
 }
+.login-success {
+  color: var(--color-status-actif);
+  background: color-mix(in srgb, var(--color-status-actif) 12%, transparent);
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem;
+}
+
+.login-footer {
+  text-align: center;
+  font-size: 0.88rem;
+  margin-top: 0.75rem;
+
+  a {
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
 
 .login-error {
   color: var(--color-error);

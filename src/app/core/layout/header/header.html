@@ -6,6 +6,7 @@
       <a routerLink="/projects" routerLinkActive="active">Projects</a>
     }
 
+
   </nav>
   @if(authService.isAuthenticated()){
     <span>{{ authService.currentUser()?.name }}</span>
@@ -13,4 +14,6 @@
   } @else {
     <a mat-flat-button color="primary" routerLink="/login">Connexion</a>
   }
+ 
+
 </header>

@@ -1,0 +1,49 @@
+<div class="filters">
+  <mat-form-field appearance="outline" class="filters__field">
+    <mat-label>Statut</mat-label>
+    <mat-select
+      [value]="value().status"
+      (valueChange)="onStatusChange($event)"
+    >
+      <mat-option value="all">Tous</mat-option>
+      @for (s of statuses; track s) {
+        <mat-option [value]="s">{{ statusLabels[s] }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="filters__field">
+    <mat-label>Priorité</mat-label>
+    <mat-select
+      [value]="value().priority"
+      (valueChange)="onPriorityChange($event)"
+    >
+      <mat-option value="all">Toutes</mat-option>
+      @for (p of priorities; track p) {
+        <mat-option [value]="p">{{ priorityLabels[p] }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="filters__field">
+    <mat-label>Échéance à partir du</mat-label>
+    <input
+      matInput
+      type="date"
+      [value]="value().deadlineFrom ?? ''"
+      (change)="onFromChange($any($event.target).value)"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="filters__field">
+    <mat-label>Échéance jusqu'au</mat-label>
+    <input
+      matInput
+      type="date"
+      [value]="value().deadlineTo ?? ''"
+      (change)="onToChange($any($event.target).value)"
+    />
+  </mat-form-field>
+
+  <button mat-stroked-button type="button" (click)="onReset()">Réinitialiser</button>
+</div>
